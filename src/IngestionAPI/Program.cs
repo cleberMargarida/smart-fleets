@@ -1,6 +1,3 @@
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
-
-app.Run();
+builder.Services.AddIngestionEventHub().AddRabbitMQ().AddRedis();
+builder.Build().Run();
