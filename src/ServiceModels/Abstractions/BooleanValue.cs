@@ -1,6 +1,4 @@
-﻿using ServiceModels;
-
-namespace ServiceModels.Abstractions;
+﻿namespace ServiceModels.Abstractions;
 
 public abstract class BooleanValue : Signal<bool>, ISignalValueAdapter<bool>
 {
