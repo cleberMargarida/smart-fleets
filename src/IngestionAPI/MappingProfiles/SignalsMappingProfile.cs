@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using IngestionAPI.Models;
 using ServiceModels;
+using ServiceModels.Helpers;
 
-namespace IngestionAPI.EventHub.MappingProfile
+namespace IngestionAPI
 {
     public class SignalsMappingProfile : Profile
     {
@@ -10,7 +10,7 @@ namespace IngestionAPI.EventHub.MappingProfile
         {
             var sourceType = typeof(Signal);
 
-            foreach (var (id, destinationType) in SignalTypeBinding.TypeMapping)
+            foreach (var (id, destinationType) in SignalTypeBindingHelper.TypeMapping)
             {
                 CreateMap(sourceType, destinationType)
                     .ForMember("Value", cfg => cfg.MapFrom<ValueResolver>());
@@ -48,4 +48,5 @@ namespace IngestionAPI.EventHub.MappingProfile
                             $"destMember:{destMember.GetType()}");
         }
     }
+
 }

@@ -4,12 +4,6 @@ using ServiceModels.Binding;
 
 namespace ServiceModels;
 
-[MessagePackObject(keyAsPropertyName: true)]
-public class Signal<TValue> : SignalAbstract
-{
-    public required TValue Value { get; set; }
-}
-
 [TypeId(SignalType.AbsStatus), MessagePackObject(keyAsPropertyName: true)]
 public sealed class AbsStatus : BooleanValue { }
 

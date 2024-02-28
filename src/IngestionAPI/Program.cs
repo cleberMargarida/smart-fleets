@@ -1,3 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddIngestionEventHub().AddRabbitMQ().AddRedis();
-builder.Build().Run();
+
+builder.Services
+       .AddRabbitMq()
+       .AddRedis()
+       .AddAutoMapper(typeof(SignalsMappingProfile));
+
+builder.Build()
+       .Run();

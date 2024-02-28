@@ -1,6 +1,4 @@
-﻿using ServiceModels;
-
-namespace ServiceModels.Abstractions;
+﻿namespace ServiceModels.Abstractions;
 
 public abstract class Coordinate : Signal<(double Latitude, double Longitude)>, ISignalValueAdapter<(double Latitude, double Longitude)>
 {

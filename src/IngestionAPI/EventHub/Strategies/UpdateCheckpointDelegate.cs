@@ -1,2 +1,0 @@
-﻿internal delegate Task UpdateCheckpointDelegate();
-
