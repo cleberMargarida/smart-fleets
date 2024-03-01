@@ -1,9 +1,13 @@
-﻿using Polly;
+﻿using IngestionAPI.Handlers.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Polly;
 using ServiceModels.Helpers;
 using StackExchange.Redis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IngestionAPI
 {
+    [ExcludeFromCodeCoverage]
     public partial class Program
     {
     }
@@ -13,6 +17,7 @@ namespace IngestionAPI
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    [ExcludeFromCodeCoverage]
     public static partial class ProgramExtensions
     {
         public static IServiceCollection AddRabbitMq(this IServiceCollection services)
@@ -60,13 +65,24 @@ namespace Microsoft.Extensions.DependencyInjection
                 return muxer;
             }).AddSingleton<IConnectionMultiplexer>(s => s.GetRequiredService<ConnectionMultiplexer>());
         }
+
+        public static IServiceCollection AddPipeline(this IServiceCollection services, Action<PipelineConfigurator> pipelineConfigurator)
+        {
+            var obj = new PipelineConfigurator();
+            pipelineConfigurator(obj);
+            foreach (var type in (HashSet<Type>)obj)
+            {
+                services.TryAddEnumerable(ServiceDescriptor.Singleton(typeof(IHandler), type));
+            }
+            return services.AddSingleton<IPipeline, Pipeline>();
+        }
     }
 
     static class SignalTypeBindingExtensions
     {
         public static Type DestinationType(this Signal signal)
         {
-            return SignalTypeBindingHelper.TypeMapping[signal.SignalType];
+            return SignalTypeBindingHelper.TypeMapping[signal.Type];
         }
     }
 }

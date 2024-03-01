@@ -1,29 +1,31 @@
 version: '3.4'
-
 services:
-
- rabbitmq:
+  rabbitmq:
     container_name: rabbitmq
     hostname: rabbitmq
-    image: rabbitmq:3-management
+    image: 'rabbitmq:3-management'
     ports:
-     - 5673:5672
-     - 15673:15672
-
- redis:
+      - '5673:5672'
+      - '15673:15672'
+  redis:
     container_name: redis
     hostname: redis
-    image: redis/redis-stack-server:latest
+    image: 'redis/redis-stack-server:latest'
     ports:
-     - 6380:6379
-
- ingestionapi:
-    image: ${DOCKER_REGISTRY-}ingestionapi
+      - '6380:6379'
+  mssql:
+    container_name: mssql
+    environment:
+      SA_PASSWORD: yourStrong(!)Password
+      ACCEPT_EULA: 'Y'
+    image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+    ports:
+      - '1435:1433'
+  ingestionapi:
+    image: '${DOCKER_REGISTRY-}ingestionapi'
     build:
       context: .
       dockerfile: src/IngestionAPI/Dockerfile
     depends_on:
-     - redis
-     - rabbitmq
- 
- 
+      - redis
+      - rabbitmq

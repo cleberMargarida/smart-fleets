@@ -1,16 +1,16 @@
-﻿using IngestionAPI.IntegrationTests;
-using IngestionAPI.Models;
+﻿using IngestionAPI.Models;
 using MessagePack;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using ServiceModels;
-using SmartFleet.RabbitMQ.Base;
+using SmartFleets.RabbitMQ.Base;
 
 namespace IngestionAPI.IntegrationTests.Consumers;
 
 public class MessagesConsumerTests : IClassFixture<IngestionApiApplicationFactory>
 {
+    private static readonly string _topology = typeof(Speed).FullName!;
     private readonly IngestionApiApplicationFactory _apiFactory;
 
     public MessagesConsumerTests(IngestionApiApplicationFactory apiFactory)
@@ -25,12 +25,12 @@ public class MessagesConsumerTests : IClassFixture<IngestionApiApplicationFactor
         await _apiFactory.InitializeAsync();
         Signal expectedSignal = new()
         {
-            DateTime = DateTime.UtcNow,
+            DateTimeUtc = DateTime.UtcNow,
             Id = Guid.NewGuid().ToString(),
             TenantId = 2,
             Value = 1,
             VehicleId = Guid.NewGuid().ToString(),
-            SignalType = 1,
+            Type = 1,
         };
         Message message = new()
         {
@@ -40,25 +40,27 @@ public class MessagesConsumerTests : IClassFixture<IngestionApiApplicationFactor
         Speed? actualSignal = null;
         var bus = _apiFactory.Services.GetRequiredService<IBus>();
         var connection = _apiFactory.Services.GetRequiredService<IConnection>();
-        using var channel = connection.CreateChannel();
-        await channel.QueueDeclareAsync("ServiceModels.Speed", autoDelete: false);
-        await channel.ExchangeDeclareAsync("ServiceModels.Speed", ExchangeType.Topic, durable: true, autoDelete: false);
-        await channel.QueueBindAsync("ServiceModels.Speed", "ServiceModels.Speed", "#");
+        using var channel = connection.CreateModel();
+        channel.QueueDeclare(_topology, autoDelete: false);
+        channel.ExchangeDeclare(_topology, ExchangeType.Topic, durable: true, autoDelete: false);
+        channel.QueueBind(_topology, _topology, "#");
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.Received += (_, e) => { actualSignal = MessagePackSerializer.Deserialize<Speed>(e.Body); return Task.CompletedTask; };
-        await channel.BasicConsumeAsync("ServiceModels.Speed", false, consumer);
+        channel.BasicConsume(_topology, false, consumer);
 
         // Act
+        await bus.PublishAsync(message);
+        await Task.Delay(300);
         await bus.PublishAsync(message);
         await Task.Delay(300);
 
         // Assert
         Assert.NotNull(actualSignal);
-        Assert.Equal(expectedSignal.DateTime, actualSignal.DateTime);
+        Assert.Equal(expectedSignal.DateTimeUtc, actualSignal.DateTimeUtc);
         Assert.Equal(expectedSignal.Id, actualSignal.Id);
         Assert.Equal(expectedSignal.TenantId, actualSignal.TenantId);
         Assert.Equal(expectedSignal.Value, actualSignal.Value);
         Assert.Equal(expectedSignal.VehicleId, actualSignal.VehicleId);
-        Assert.Equal(expectedSignal.SignalType, (uint)actualSignal.SignalType);
+        Assert.Equal(expectedSignal.Type, (uint)actualSignal.Type);
     }
 }

@@ -1,45 +1,47 @@
-using IngestionAPI.Consumers;
+﻿using IngestionAPI.Consumers;
+using IngestionAPI.Handlers.Abstractions;
 using IngestionAPI.Models;
 using Moq;
-using SmartFleet.RabbitMQ.Base;
 
 namespace IngestionAPI.UnitTests.Consumers
 {
     public class MessageConsumerTests
     {
         private readonly MessageConsumer _consumer;
-        private readonly Mock<IBus> _bus;
+        private readonly Mock<IPipeline> _pipeline;
 
-        public MessageConsumerTests(MessageConsumer consumer, Mock<IBus> bus)
+        public MessageConsumerTests(MessageConsumer consumer, Mock<IPipeline> pipeline)
         {
             _consumer = consumer;
-            _bus = bus;
+            _pipeline = pipeline;
         }
 
         [Fact]
-        public async Task ConsumeAsync_MessageContaningSpeed_ShouldPublish()
+        public async Task ConsumeAsync_MessageWithSignals_ExecutesPipelineForEachSignal()
         {
             // Arrange
-            var signal = new Signal
-            {
-                Id = Guid.NewGuid().ToString(),
-                TenantId = 2,
-                Value = 1,
-                VehicleId = Guid.NewGuid().ToString(),
-                SignalType = 1,
-                DateTime = DateTime.Now,
-            };
-            var message = new Message
-            {
-                Id = Guid.NewGuid().ToString(),
-                Signals = { signal }
-            };
+            var message = Activator.CreateInstance<Message>();
+            message.Signals = [Activator.CreateInstance<Signal>(), Activator.CreateInstance<Signal>()];
 
             // Act
             await _consumer.ConsumeAsync(message);
 
             // Assert
-            _bus.Verify(b => b.PublishAsync(It.IsAny<object>()), Times.Once);
+            _pipeline.Verify(p => p.RunAsync(It.IsAny<Signal>()), Times.Exactly(message.Signals.Count));
+        }
+
+        [Fact]
+        public async Task ConsumeAsync_EmptyMessage_DoesNotExecutePipeline()
+        {
+            // Arrange
+            var message = Activator.CreateInstance<Message>();
+            message.Signals = [];
+
+            // Act
+            await _consumer.ConsumeAsync(message);
+
+            // Assert
+            _pipeline.Verify(p => p.RunAsync(It.IsAny<Signal>()), Times.Never);
         }
     }
 }
