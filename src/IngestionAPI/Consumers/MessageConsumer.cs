@@ -1,31 +1,31 @@
-﻿using AutoMapper;
-using IngestionAPI.Models;
-using SmartFleet.RabbitMQ.Base;
-using SmartFleet.RabbitMQ.Messaging;
+﻿using IngestionAPI.Handlers.Abstractions;
+using SmartFleets.RabbitMQ.Messaging;
 
 namespace IngestionAPI.Consumers
 {
+    /// <summary>
+    /// Consumes messages and processes them using a specified pipeline.
+    /// </summary>
     public class MessageConsumer : IConsumer<Message>
     {
-        private readonly IBus _bus;
-        private readonly IMapper _mapper;
+        private readonly IPipeline _pipeline;
 
-        public MessageConsumer(IBus bus, IMapper mapper)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageConsumer"/> class.
+        /// </summary>
+        /// <param name="pipeline">The pipeline used to execute processing on received messages.</param>
+        public MessageConsumer(IPipeline pipeline)
         {
-            _bus = bus;
-            _mapper = mapper;
+            _pipeline = pipeline;
         }
 
-        public Task ConsumeAsync(Message message) => Task.WhenAll(message
-                .Signals
-                .Select(signal =>
-                {
-                    var signalConverted = _mapper.Map(
-                        signal,
-                        signal.GetType(),
-                        signal.DestinationType());
-
-                    return _bus.PublishAsync(signalConverted);
-                }));
+        /// <inheritdoc/>
+        public async Task ConsumeAsync(Message message) 
+        {
+            foreach (var signal in message.Signals)
+            {
+                await _pipeline.RunAsync(signal);
+            }
+        }
     }
 }

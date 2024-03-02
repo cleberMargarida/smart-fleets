@@ -1,6 +1,6 @@
 ﻿using MessagePack;
 using ServiceModels.Binding;
-using SmartFleet.RabbitMQ.Messaging;
+using SmartFleets.RabbitMQ.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
@@ -14,16 +14,16 @@ public abstract class SignalAbstract : IRoutingKeyProviderableObject
     public required string Id { get; set; }
     public required int TenantId { get; set; }
     public required string VehicleId { get; set; }
-    public required DateTime DateTime { get; set; }
+    public required DateTime DateTimeUtc { get; set; }
 
     public bool IsNewerThan(SignalAbstract? compare)
     {
-        return compare == null || DateTime > compare.DateTime;
+        return compare == null || DateTimeUtc > compare.DateTimeUtc;
     }
 
     public bool IsOlderThan(SignalAbstract? compare)
     {
-        return compare != null && DateTime < compare.DateTime;
+        return compare != null && DateTimeUtc < compare.DateTimeUtc;
     }
 
     string IRoutingKeyProviderableObject.ToRoutingKey()
@@ -32,7 +32,7 @@ public abstract class SignalAbstract : IRoutingKeyProviderableObject
     }
 
     [NotMapped, IgnoreMember]
-    public SignalType SignalType
+    public SignalType Type
     {
         get => _signalType ??= GetType().GetCustomAttribute<TypeIdAttribute>()?.Type
             ?? throw TypeIdNotDecoratedException.NotDecorated(GetType());

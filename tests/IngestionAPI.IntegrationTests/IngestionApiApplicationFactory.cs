@@ -1,9 +1,9 @@
-using DotNet.Testcontainers.Builders;
+using IngestionAPI.Handlers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.RabbitMq;
-using IContainer = DotNet.Testcontainers.Containers.IContainer;
+using Testcontainers.Redis;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
@@ -11,24 +11,16 @@ namespace IngestionAPI.IntegrationTests
 {
     public class IngestionApiApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
-        private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder()
-                .WithImage("rabbitmq:3-management")
-                .WithPortBinding(15672, true)
-                .WithPortBinding(5672, true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5672))
-                .Build();
-
-        private readonly IContainer _redisContainer = new ContainerBuilder()
-                .WithImage("redis/redis-stack-server:latest")
-                .WithPortBinding(6379, true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(6379))
-                .Build();
+        private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder().WithImage("rabbitmq:3-management").Build();
+        private readonly RedisContainer _redisContainer = new RedisBuilder().WithImage("redis/redis-stack-server:latest").Build();
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment("Development");
-            Environment.SetEnvironmentVariable("ConnectionStrings:redis", $"{_redisContainer.Hostname}:{_redisContainer.GetMappedPublicPort(6379)}");
+            Environment.SetEnvironmentVariable("ConnectionStrings:redis", _redisContainer.GetConnectionString());
             Environment.SetEnvironmentVariable("ConnectionStrings:rabbitmq", _rabbitMqContainer.GetConnectionString());
+            builder.ConfigureServices(services => 
+                services.Configure<PublishHandlerConfiguration>(c => c.Timeout = TimeSpan.FromMilliseconds(100)));
         }
 
         public async Task InitializeAsync()
