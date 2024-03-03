@@ -3,7 +3,9 @@
 namespace ServiceModels.Abstractions;
 
 [MessagePackObject(keyAsPropertyName: true)]
-public abstract class Signal<TValue> : SignalAbstract
+[GenerateSerializer]
+public abstract class Signal<TValue> : BaseSignal
 {
+    [Id(5)]
     public required TValue Value { get; set; }
 }

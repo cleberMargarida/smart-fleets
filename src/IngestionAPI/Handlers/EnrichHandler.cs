@@ -1,4 +1,5 @@
 ﻿using IngestionAPI.Handlers.Abstractions;
+using ServiceModels.Abstractions;
 using System;
 
 namespace IngestionAPI.Handlers
@@ -12,7 +13,7 @@ namespace IngestionAPI.Handlers
         /// Enriches the given signal with additional informations.
         /// </summary>
         /// <param name="signal">The signal to be enriched.</param>
-        public void Handle(Signal signal)
+        public void Handle(BaseSignal signal)
         {
             signal.IngestedDateTimeUtc = DateTime.UtcNow;
         }

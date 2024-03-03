@@ -10,6 +10,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/IngestionAPI/IngestionAPI.csproj", "src/IngestionAPI/"]
+COPY ["src/IngestionAPI.GrainInterfaces/IngestionAPI.GrainInterfaces.csproj", "src/IngestionAPI.GrainInterfaces/"]
 COPY ["src/ServiceModels/ServiceModels.csproj", "src/ServiceModels/"]
 RUN dotnet restore "./src/IngestionAPI/./IngestionAPI.csproj"
 COPY . .

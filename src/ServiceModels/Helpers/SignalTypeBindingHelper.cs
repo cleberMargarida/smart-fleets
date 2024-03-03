@@ -10,7 +10,7 @@ public static class SignalTypeBindingHelper
     public static IReadOnlyDictionary<uint, Type> TypeMapping => _typeMapping ??= Assembly
         .GetExecutingAssembly()
         .DefinedTypes
-        .Where(t => typeof(SignalAbstract).IsAssignableFrom(t) && !t.IsAbstract)
+        .Where(t => typeof(BaseSignal).IsAssignableFrom(t) && !t.IsAbstract)
         .ToDictionary(t => t.GetCustomAttribute<TypeIdAttribute>()!.TypeAsNumber,
                         t => t.AsType())
         .AsReadOnly();

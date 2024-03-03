@@ -1,4 +1,6 @@
-﻿namespace IngestionAPI.Handlers.Abstractions
+﻿using ServiceModels.Abstractions;
+
+namespace IngestionAPI.Handlers.Abstractions
 {
     /// <summary>
     /// Asynchronously executes the pipeline on a given signal.
@@ -7,6 +9,6 @@
     /// <returns>A task representing the asynchronous operation.</returns>
     public interface IPipeline
     {
-        Task RunAsync(Signal signal);
+        Task RunAsync(BaseSignal signal);
     }
 }

@@ -1,9 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseOrleansClient(builder.Environment);
+
 builder.Services.AddAutoMapper(typeof(SignalMappingProfile));
 builder.Services.AddRabbitMq();
 builder.Services.AddRedis();
-builder.Services.Configure<PublishHandlerConfiguration>(c => 
+builder.Services.Configure<PublishHandlerConfiguration>(c =>
 {
     c.Timeout = TimeSpan.FromSeconds(30);
     c.BatchSize = 100;
@@ -12,7 +14,8 @@ builder.Services.Configure<PublishHandlerConfiguration>(c =>
 builder.Services.AddPipeline(pipeline =>
     pipeline
         .Add<EnrichHandler>()
-        .Add<PublishHandler>());
+        .Add<PublishHandler>()
+        .Add<VehicleStateHandler>());
 
 var app = builder.Build();
 

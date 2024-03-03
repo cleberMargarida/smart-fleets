@@ -1,66 +1,97 @@
 ﻿using IngestionAPI.Models;
-using MessagePack;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using ServiceModels;
 using SmartFleets.RabbitMQ.Base;
 
 namespace IngestionAPI.IntegrationTests.Consumers;
 
-public class MessagesConsumerTests : IClassFixture<IngestionApiApplicationFactory>
+public class MessagesConsumerTests :
+    IClassFixture<IngestionApiApplicationFactory>,
+    IClassFixture<StubConsumer>
 {
-    private static readonly string _topology = typeof(Speed).FullName!;
-    private readonly IngestionApiApplicationFactory _apiFactory;
+    private readonly IngestionApiApplicationFactory _api;
+    private readonly StubConsumer _consumer;
 
-    public MessagesConsumerTests(IngestionApiApplicationFactory apiFactory)
+    public MessagesConsumerTests(IngestionApiApplicationFactory apiFactory, StubConsumer consumer)
     {
-        _apiFactory = apiFactory;
+        _api = apiFactory;
+        _consumer = consumer;
     }
 
     [Fact]
     public async Task ConsumeMessage_WithSpeedSignal_ShouldProcessAndPublishSignal()
     {
         // Arrange
-        await _apiFactory.InitializeAsync();
-        Signal expectedSignal = new()
-        {
-            DateTimeUtc = DateTime.UtcNow,
-            Id = Guid.NewGuid().ToString(),
-            TenantId = 2,
-            Value = 1,
-            VehicleId = Guid.NewGuid().ToString(),
-            Type = 1,
-        };
-        Message message = new()
+        List<VehicleState> states = [];
+        List<Speed> signals = [];
+        var bus = _api.Services.GetRequiredService<IBus>();
+        var message = new Message
         {
             Id = Guid.NewGuid().ToString(),
-            Signals = [expectedSignal]
+            Signals =
+            {
+                new()
+                {
+                    DateTimeUtc = DateTime.UtcNow,
+                    Id = Guid.NewGuid().ToString(),
+                    TenantId = 2,
+                    Value = 1,
+                    VehicleId = Guid.NewGuid().ToString(),
+                    Type = 1,
+                }
+            }
         };
-        Speed? actualSignal = null;
-        var bus = _apiFactory.Services.GetRequiredService<IBus>();
-        var connection = _apiFactory.Services.GetRequiredService<IConnection>();
-        using var channel = connection.CreateModel();
-        channel.QueueDeclare(_topology, autoDelete: false);
-        channel.ExchangeDeclare(_topology, ExchangeType.Topic, durable: true, autoDelete: false);
-        channel.QueueBind(_topology, _topology, "#");
-        var consumer = new AsyncEventingBasicConsumer(channel);
-        consumer.Received += (_, e) => { actualSignal = MessagePackSerializer.Deserialize<Speed>(e.Body); return Task.CompletedTask; };
-        channel.BasicConsume(_topology, false, consumer);
+        _consumer.Connect(Environment.GetEnvironmentVariable("ConnectionStrings:rabbitmq"));
+        _consumer.ConfigureTopology(t =>
+        {
+            t.Exchanges.WithFullName();
+            t.Queues.WithPattern("IntegrationTest").WithFullName();
+        });
+        _consumer.Consume<Speed>(signals.Add);
+        _consumer.Consume<VehicleState>(states.Add);
 
         // Act
         await bus.PublishAsync(message);
-        await Task.Delay(300);
-        await bus.PublishAsync(message);
-        await Task.Delay(300);
+        await WrapContext();
 
         // Assert
-        Assert.NotNull(actualSignal);
-        Assert.Equal(expectedSignal.DateTimeUtc, actualSignal.DateTimeUtc);
-        Assert.Equal(expectedSignal.Id, actualSignal.Id);
-        Assert.Equal(expectedSignal.TenantId, actualSignal.TenantId);
-        Assert.Equal(expectedSignal.Value, actualSignal.Value);
-        Assert.Equal(expectedSignal.VehicleId, actualSignal.VehicleId);
-        Assert.Equal(expectedSignal.Type, (uint)actualSignal.Type);
+        Assert.NotNull(signals[0]);
+        Assert.Equal(message.Signals[0].DateTimeUtc, signals[0].DateTimeUtc);
+        Assert.Equal(message.Signals[0].Id, signals[0].Id);
+        Assert.Equal(message.Signals[0].TenantId, signals[0].TenantId);
+        Assert.Equal(message.Signals[0].Value, signals[0].Value);
+        Assert.Equal(message.Signals[0].VehicleId, signals[0].VehicleId);
+        Assert.Equal(message.Signals[0].Type, (uint)signals[0].Type);
+        Assert.NotNull(states[0]);
+        Assert.Equal(message.Signals[0].DateTimeUtc, states[0].Speed.DateTimeUtc);
+        Assert.Equal(message.Signals[0].Id, states[0].Speed.Id);
+        Assert.Equal(message.Signals[0].TenantId, states[0].Speed.TenantId);
+        Assert.Equal(message.Signals[0].Value, states[0].Speed.Value);
+        Assert.Equal(message.Signals[0].VehicleId, states[0].Speed.VehicleId);
+        Assert.Equal(message.Signals[0].Type, (uint)states[0].Speed.Type);
+    }
+
+    /// <summary>
+    /// Wrap the context to consume the message.
+    /// </summary>
+    private static async Task WrapContext()
+    {
+        if (IsDebugging)
+        {
+            // Put here any time that you need.
+            await Task.Delay(10000);
+        }
+        else
+        {
+            await Task.Delay(2000);
+        }
+    }
+
+    private static bool IsDebugging
+    {
+        get
+        {
+            return System.Diagnostics.Debugger.IsAttached;
+        }
     }
 }

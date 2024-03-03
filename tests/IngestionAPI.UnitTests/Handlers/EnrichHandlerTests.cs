@@ -1,5 +1,6 @@
 ﻿using IngestionAPI.Handlers;
 using IngestionAPI.Models;
+using ServiceModels;
 
 namespace IngestionAPI.Tests.Handlers
 {
@@ -16,7 +17,7 @@ namespace IngestionAPI.Tests.Handlers
         public void Handle_SignalProvided_EnrichesSignalWithIngestedDateTimeUtc()
         {
             // Arrange
-            var signal = Activator.CreateInstance<Signal>();
+            var signal = Activator.CreateInstance<Speed>();
 
             // Act
             _handler.Handle(signal);

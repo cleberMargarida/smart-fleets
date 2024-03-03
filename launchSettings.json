@@ -4,7 +4,12 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "ingestionapi": "StartDebugging"
+        "ingestionapi": "StartDebugging",
+        "consul": "StartWithoutDebugging",
+        "ingestionapi.silo": "StartDebugging",
+        "mssql": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging"
       }
     }
   }

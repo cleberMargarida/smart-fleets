@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>6c328ef7-2315-4445-9b34-9d35c13f1675</ProjectGuid>
+    <ProjectGuid>25e04dee-2cd2-4761-a195-f62a05a7b6fd</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>ingestionapi</DockerServiceName>

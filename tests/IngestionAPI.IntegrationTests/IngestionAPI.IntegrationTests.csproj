@@ -3,14 +3,16 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="7.0.0-alpha.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+		<PackageReference Include="Microsoft.Orleans.TestingHost" Version="8.0.0" />
 		<PackageReference Include="Moq" Version="4.16.0" />
 		<PackageReference Include="Testcontainers" Version="3.7.0" />
 		<PackageReference Include="Testcontainers.MsSql" Version="3.7.0" />
@@ -28,6 +30,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\IngestionAPI.GrainInterfaces\IngestionAPI.GrainInterfaces.csproj" />
+	  <ProjectReference Include="..\..\src\IngestionAPI.Grains\IngestionAPI.Grains.csproj" />
+	  <ProjectReference Include="..\..\src\IngestionAPI.Silo\IngestionAPI.Silo.csproj" />
 	  <ProjectReference Include="..\..\src\IngestionAPI\IngestionAPI.csproj" />
 	</ItemGroup>
 

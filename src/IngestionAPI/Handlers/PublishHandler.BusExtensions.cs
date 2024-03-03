@@ -21,16 +21,16 @@ namespace IngestionAPI.Handlers
         /// <param name="bus">The bus instance.</param>
         /// <param name="signals">The signals to publish.</param>
         /// <returns> A task that represents the asynchronous publish operation.</returns>
-        public static Task PublishSignalsAsync(this IBus bus, SortedSet<SignalAbstract> signals)
+        public static Task PublishSignalsAsync(this IBus bus, SortedSet<BaseSignal> signals)
         {
             var type = signals.First().GetType();
             var values = _collectionMethod.MakeGenericMethod(type).Invoke(null, [signals]);
             return (Task)_publishMethod.MakeGenericMethod(type).Invoke(bus, [values]);
         }
 
-        private static IEnumerable<T> Collection<T>(SortedSet<SignalAbstract> signals) where T : SignalAbstract
+        private static IEnumerable<T> Collection<T>(SortedSet<BaseSignal> signals) where T : BaseSignal
         {
-            foreach (SignalAbstract signal in signals)
+            foreach (BaseSignal signal in signals)
             {
                 yield return (T)signal;
             }

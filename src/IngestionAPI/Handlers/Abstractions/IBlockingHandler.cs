@@ -1,4 +1,6 @@
-﻿namespace IngestionAPI.Handlers.Abstractions
+﻿using ServiceModels.Abstractions;
+
+namespace IngestionAPI.Handlers.Abstractions
 {
     /// <summary>
     /// Defines a Synchronously handler for processing signals within a pipeline.
@@ -12,6 +14,6 @@
         /// <remarks>
         /// Used for shortly operations.
         /// </remarks>
-        void Handle(Signal signal);
+        void Handle(BaseSignal signal);
     }
 }

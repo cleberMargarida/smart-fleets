@@ -35,13 +35,6 @@ public class Signal : IRoutingKeyProviderableObject
     public required DateTime DateTimeUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the date and time when the signal was ingested into the system.
-    /// This property is not serialized.
-    /// </summary>
-    [IgnoreMember]
-    public DateTime IngestedDateTimeUtc { get; set; }
-
-    /// <summary>
     /// Gets or sets the value of the signal, if it is numeric.
     /// </summary>
     public double? Value { get; set; }
