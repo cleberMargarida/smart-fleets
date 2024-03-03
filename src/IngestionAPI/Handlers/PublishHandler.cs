@@ -20,8 +20,8 @@ namespace IngestionAPI.Handlers
         private Task? _periodicScan;
         private PeriodicTimer? _periodicTimer;
 
-        private readonly Dictionary<SignalType, SortedSet<SignalAbstract>> _sets
-            = Enum.GetValues<SignalType>().ToDictionary(t => t, t => new SortedSet<SignalAbstract>(_comparer));
+        private readonly Dictionary<SignalType, SortedSet<BaseSignal>> _sets
+            = Enum.GetValues<SignalType>().ToDictionary(t => t, t => new SortedSet<BaseSignal>(_comparer));
 
         private readonly Dictionary<SignalType, Stopwatch> _clocks
             = Enum.GetValues<SignalType>().ToDictionary(t => t, t => new Stopwatch());
@@ -47,11 +47,9 @@ namespace IngestionAPI.Handlers
         /// </summary>
         /// <param name="current">The signal to be handled.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public Task HandleAsync(Signal current)
+        public Task HandleAsync(BaseSignal signal)
         {
             _periodicScan ??= Task.Run(PeriodicScan);
-
-            var signal = GetSignal(current);
             var set = GetSet(signal);
 
             lock (set)
@@ -60,7 +58,7 @@ namespace IngestionAPI.Handlers
             }
         }
 
-        private Task HandleAsyncInternal(SignalType type, SortedSet<SignalAbstract> set, bool force = false)
+        private Task HandleAsyncInternal(SignalType type, SortedSet<BaseSignal> set, bool force = false)
         {
             lock (set)
             {
@@ -68,7 +66,7 @@ namespace IngestionAPI.Handlers
             }
         }
 
-        private async Task HandleAsyncInternal(SignalAbstract? signal, SignalType type, SortedSet<SignalAbstract> set, bool force = false)
+        private async Task HandleAsyncInternal(BaseSignal? signal, SignalType type, SortedSet<BaseSignal> set, bool force = false)
         {
             var stopwatch = _clocks[type];
 
@@ -93,12 +91,7 @@ namespace IngestionAPI.Handlers
             stopwatch.Reset();
         }
 
-        private SignalAbstract GetSignal(Signal current)
-        {
-            return (SignalAbstract)_mapper.Map(current, current.GetType(), current.DestinationType());
-        }
-
-        private SortedSet<SignalAbstract> GetSet(SignalAbstract signal)
+        private SortedSet<BaseSignal> GetSet(BaseSignal signal)
         {
             return _sets[signal.Type];
         }

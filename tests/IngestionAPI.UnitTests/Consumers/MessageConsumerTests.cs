@@ -2,6 +2,7 @@
 using IngestionAPI.Handlers.Abstractions;
 using IngestionAPI.Models;
 using Moq;
+using ServiceModels.Abstractions;
 
 namespace IngestionAPI.UnitTests.Consumers
 {
@@ -21,13 +22,16 @@ namespace IngestionAPI.UnitTests.Consumers
         {
             // Arrange
             var message = Activator.CreateInstance<Message>();
-            message.Signals = [Activator.CreateInstance<Signal>(), Activator.CreateInstance<Signal>()];
+            var signal = Activator.CreateInstance<Signal>();
+            signal.Type = 1;
+            signal.Value = 1;
+            message.Signals = [signal];
 
             // Act
             await _consumer.ConsumeAsync(message);
 
             // Assert
-            _pipeline.Verify(p => p.RunAsync(It.IsAny<Signal>()), Times.Exactly(message.Signals.Count));
+            _pipeline.Verify(p => p.RunAsync(It.IsAny<BaseSignal>()), Times.Exactly(message.Signals.Count));
         }
 
         [Fact]
@@ -41,7 +45,7 @@ namespace IngestionAPI.UnitTests.Consumers
             await _consumer.ConsumeAsync(message);
 
             // Assert
-            _pipeline.Verify(p => p.RunAsync(It.IsAny<Signal>()), Times.Never);
+            _pipeline.Verify(p => p.RunAsync(It.IsAny<BaseSignal>()), Times.Never);
         }
     }
 }

@@ -14,6 +14,27 @@ namespace IngestionAPI
 }
 
 #nullable disable
+namespace Microsoft.Extensions.Hosting
+{
+    [ExcludeFromCodeCoverage]
+    public static class HostExtensions
+    {
+        public static void UseOrleansClient(this ConfigureHostBuilder host, IWebHostEnvironment environment)
+        {
+            host.UseOrleansClient((context, silo) =>
+            {
+                if (environment.IsRunningInDocker())
+                {
+                    silo.UseRedisClustering(context.Configuration.GetConnectionString("redis"));
+                }
+                else
+                {
+                    silo.UseLocalhostClustering();
+                }
+            });
+        }
+    }
+}
 
 namespace Microsoft.Extensions.DependencyInjection
 {

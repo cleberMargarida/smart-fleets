@@ -5,17 +5,17 @@ using System.Collections.Generic;
 namespace IngestionAPI.Handlers
 {
     /// <summary>
-    /// Provides a comparer for <see cref="SignalAbstract"/> objects based on their DateTime property.
+    /// Provides a comparer for <see cref="BaseSignal"/> objects based on their DateTime property.
     /// </summary>
-    public class SignalDateTimeComparer : IComparer<SignalAbstract>
+    public class SignalDateTimeComparer : IComparer<BaseSignal>
     {
         /// <summary>
-        /// Compares two <see cref="SignalAbstract"/> objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+        /// Compares two <see cref="BaseSignal"/> objects and returns a value indicating whether one is less than, equal to, or greater than the other.
         /// </summary>
-        /// <param name="x">The first <see cref="SignalAbstract"/> object to compare.</param>
-        /// <param name="y">The second <see cref="SignalAbstract"/> object to compare.</param>
+        /// <param name="x">The first <see cref="BaseSignal"/> object to compare.</param>
+        /// <param name="y">The second <see cref="BaseSignal"/> object to compare.</param>
         /// <returns>An integer that indicates the relative order of the objects being compared.</returns>
-        public int Compare(SignalAbstract? x, SignalAbstract? y)
+        public int Compare(BaseSignal? x, BaseSignal? y)
         {
             if (x != null && y != null)
             {

@@ -7,8 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Orleans.Sdk" Version="8.0.0" />
 		<PackageReference Include="MessagePack" Version="2.6.100-alpha" />
-		<PackageReference Include="SmartFleets.RabbitMQ.Messaging.Extensions" Version="1.0.0" />
+		<PackageReference Include="SmartFleets.RabbitMQ.Messaging.Extensions" Version="1.0.1-beta" />
 	</ItemGroup>
+
+	<!--<ItemGroup>-->
+	  <!--<ProjectReference Include="..\..\..\smart-fleets-rabbiqmq\SmartFleets.RabbitMQ.Messaging\SmartFleets.RabbitMQ.Messaging.csproj" />-->
+	<!--</ItemGroup>-->
 
 </Project>

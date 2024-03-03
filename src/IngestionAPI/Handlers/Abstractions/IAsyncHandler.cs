@@ -1,4 +1,6 @@
-﻿namespace IngestionAPI.Handlers.Abstractions
+﻿using ServiceModels.Abstractions;
+
+namespace IngestionAPI.Handlers.Abstractions
 {
     /// <summary>
     /// Defines an asynchronous handler for processing signals within a pipeline.
@@ -13,6 +15,6 @@
         /// <remarks>
         /// It doesn't blocks the current thread, used for long operations.
         /// </remarks>
-        Task HandleAsync(Signal signal);
+        Task HandleAsync(BaseSignal signal);
     }
 }

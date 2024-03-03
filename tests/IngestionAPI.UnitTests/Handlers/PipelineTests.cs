@@ -1,8 +1,9 @@
 ﻿using IngestionAPI.Handlers;
 using IngestionAPI.Handlers.Abstractions;
-using IngestionAPI.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
+using ServiceModels;
+using ServiceModels.Abstractions;
 
 namespace IngestionAPI.Tests.Handlers
 {
@@ -27,30 +28,32 @@ namespace IngestionAPI.Tests.Handlers
         [Fact]
         public async Task RunAsync_ValidSignal_ExecutesAllHandlers()
         {
-            var signal = Activator.CreateInstance<Signal>();
-            _validatorHandler.Setup(h => h.Handle(It.IsAny<Signal>())).Returns(true);
+            // Arrange
+            var signal = Activator.CreateInstance<Speed>();
+            _validatorHandler.Setup(h => h.Handle(It.IsAny<BaseSignal>())).Returns(true);
 
             // Act
             await _pipeline.RunAsync(signal);
 
             // Assert
-            _validatorHandler.Verify(h => h.Handle(It.IsAny<Signal>()), Times.Once);
-            _syncHandler.Verify(h => h.Handle(It.IsAny<Signal>()), Times.Once);
-            _asyncHandler.Verify(h => h.HandleAsync(It.IsAny<Signal>()), Times.Once);
+            _validatorHandler.Verify(h => h.Handle(It.IsAny<BaseSignal>()), Times.Once);
+            _syncHandler.Verify(h => h.Handle(It.IsAny<BaseSignal>()), Times.Once);
+            _asyncHandler.Verify(h => h.HandleAsync(It.IsAny<BaseSignal>()), Times.Once);
         }
 
         [Fact]
         public async Task RunAsync_InvalidSignal_NonExecutesAllHandlers()
         {
-            var signal = Activator.CreateInstance<Signal>();
+            // Arrange
+            var signal = Activator.CreateInstance<Speed>();
 
             // Act
             await _pipeline.RunAsync(signal);
 
             // Assert
-            _validatorHandler.Verify(h => h.Handle(It.IsAny<Signal>()), Times.Once);
-            _syncHandler.Verify(h => h.Handle(It.IsAny<Signal>()), Times.Never);
-            _asyncHandler.Verify(h => h.HandleAsync(It.IsAny<Signal>()), Times.Never);
+            _validatorHandler.Verify(h => h.Handle(It.IsAny<BaseSignal>()), Times.Once);
+            _syncHandler.Verify(h => h.Handle(It.IsAny<BaseSignal>()), Times.Never);
+            _asyncHandler.Verify(h => h.HandleAsync(It.IsAny<BaseSignal>()), Times.Never);
         }
 
         [Fact]
@@ -75,27 +78,27 @@ namespace IngestionAPI.Tests.Handlers
 
         class AllHandlers : IValidatorHandler, IBlockingHandler, IAsyncHandler
         {
-            public bool Handle(Signal signal) => false;
-            public Task HandleAsync(Signal signal) => Task.CompletedTask;
-            void IBlockingHandler.Handle(Signal signal) { }
+            public bool Handle(BaseSignal signal) => false;
+            public Task HandleAsync(BaseSignal signal) => Task.CompletedTask;
+            void IBlockingHandler.Handle(BaseSignal signal) { }
         }
 
         class ValidatorWithBlocking : IValidatorHandler, IBlockingHandler
         {
-            public bool Handle(Signal signal) => false;
-            void IBlockingHandler.Handle(Signal signal) { }
+            public bool Handle(BaseSignal signal) => false;
+            void IBlockingHandler.Handle(BaseSignal signal) { }
         }
 
         class ValidatorWithAsync : IValidatorHandler, IAsyncHandler
         {
-            public bool Handle(Signal signal) => false;
-            public Task HandleAsync(Signal signal) => Task.CompletedTask;
+            public bool Handle(BaseSignal signal) => false;
+            public Task HandleAsync(BaseSignal signal) => Task.CompletedTask;
         }
 
         class AsyncWithBlocking : IAsyncHandler, IBlockingHandler
         {
-            public void Handle(Signal signal) { }
-            public Task HandleAsync(Signal signal) => Task.CompletedTask;
+            public void Handle(BaseSignal signal) { }
+            public Task HandleAsync(BaseSignal signal) => Task.CompletedTask;
         }
     }
 }

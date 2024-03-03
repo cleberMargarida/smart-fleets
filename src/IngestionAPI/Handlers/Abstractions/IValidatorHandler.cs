@@ -1,4 +1,6 @@
-﻿namespace IngestionAPI.Handlers.Abstractions
+﻿using ServiceModels.Abstractions;
+
+namespace IngestionAPI.Handlers.Abstractions
 {
     /// <summary>
     /// Defines a validator handler for processing signals within a pipeline.
@@ -14,6 +16,6 @@
         /// </summary>
         /// <param name="signal">The signal to be validated.</param>
         /// <returns>A boolean indicating whether the signal is valid and processing should continue.</returns>
-        bool Handle(Signal signal);
+        bool Handle(BaseSignal signal);
     }
 }

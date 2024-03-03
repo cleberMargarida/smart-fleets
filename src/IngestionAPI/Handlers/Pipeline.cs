@@ -1,4 +1,5 @@
 ﻿using IngestionAPI.Handlers.Abstractions;
+using ServiceModels.Abstractions;
 
 namespace IngestionAPI.Handlers
 {
@@ -32,7 +33,7 @@ namespace IngestionAPI.Handlers
         }
 
         /// <inheritdoc/>
-        public async Task RunAsync(Signal signal)
+        public async Task RunAsync(BaseSignal signal)
         {
             foreach (var handler in _handlers)
             {

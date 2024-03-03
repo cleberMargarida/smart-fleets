@@ -1,8 +1,6 @@
-﻿using IngestionAPI.Models;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Moq;
 using ServiceModels;
-using ServiceModels.Binding;
 using SmartFleets.RabbitMQ.Base;
 
 namespace IngestionAPI.Handlers.Tests
@@ -30,13 +28,11 @@ namespace IngestionAPI.Handlers.Tests
             var configuration = new PublishHandlerConfiguration { BatchSize = 2 };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal1 = Activator.CreateInstance<Signal>();
-            signal1.Type = (uint)SignalType.Speed;
+            var signal1 = Activator.CreateInstance<Speed>();
             signal1.Value = 1;
             signal1.DateTimeUtc = DateTime.UtcNow;
 
-            var signal2 = Activator.CreateInstance<Signal>();
-            signal2.Type = (uint)SignalType.Speed;
+            var signal2 = Activator.CreateInstance<Speed>();
             signal2.Value = 1;
             signal2.DateTimeUtc = DateTime.UtcNow;
 
@@ -55,13 +51,11 @@ namespace IngestionAPI.Handlers.Tests
             var configuration = new PublishHandlerConfiguration { Timeout = TimeSpan.FromMilliseconds(50) };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal1 = Activator.CreateInstance<Signal>();
-            signal1.Type = (uint)SignalType.Speed;
+            var signal1 = Activator.CreateInstance<Speed>();
             signal1.Value = 1;
             signal1.DateTimeUtc = DateTime.UtcNow;
 
-            var signal2 = Activator.CreateInstance<Signal>();
-            signal2.Type = (uint)SignalType.Speed;
+            var signal2 = Activator.CreateInstance<Speed>();
             signal2.Value = 1;
             signal2.DateTimeUtc = DateTime.UtcNow;
 
@@ -78,12 +72,10 @@ namespace IngestionAPI.Handlers.Tests
         public async Task HandleAsync_SignalTypeDifferent_AddsToCorrectSet()
         {
             // Arrange
-            var signalType1 = Activator.CreateInstance<Signal>();
-            signalType1.Type = (uint)SignalType.Speed;
+            var signalType1 = Activator.CreateInstance<Speed>();
             signalType1.Value = 1;
 
-            var signalType2 = Activator.CreateInstance<Signal>();
-            signalType2.Type = (uint)SignalType.FuelLevel;
+            var signalType2 = Activator.CreateInstance<FuelLevel>();
             signalType2.Value = 1;
 
             // Act
@@ -107,8 +99,7 @@ namespace IngestionAPI.Handlers.Tests
             };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal = Activator.CreateInstance<Signal>();
-            signal.Type = (uint)SignalType.Speed;
+            var signal = Activator.CreateInstance<Speed>();
             signal.Value = 1;
 
             // Act
@@ -131,8 +122,7 @@ namespace IngestionAPI.Handlers.Tests
             };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal = Activator.CreateInstance<Signal>();
-            signal.Type = (uint)SignalType.Speed;
+            var signal = Activator.CreateInstance<Speed>();
             signal.Value = 1;
 
             // Act
@@ -146,8 +136,7 @@ namespace IngestionAPI.Handlers.Tests
         public async Task HandleAsync_NoBatchSizeOrTimeout_PublishImmediately()
         {
             // Arrange
-            var signal = Activator.CreateInstance<Signal>();
-            signal.Type = (uint)SignalType.Speed;
+            var signal = Activator.CreateInstance<Speed>();
             signal.Value = 1;
 
             // Act
@@ -163,8 +152,7 @@ namespace IngestionAPI.Handlers.Tests
             // Arrange
             _handler.Dispose();
 
-            var signal = Activator.CreateInstance<Signal>();
-            signal.Type = (uint)SignalType.Speed;
+            var signal = Activator.CreateInstance<Speed>();
             signal.Value = 1;
 
             // Act & Assert
@@ -176,8 +164,7 @@ namespace IngestionAPI.Handlers.Tests
         public async Task HandleAsync_SignalAdded_MappedCorrectly()
         {
             // Arrange
-            var expected = Activator.CreateInstance<Signal>();
-            expected.Type = (uint)SignalType.Speed;
+            var expected = Activator.CreateInstance<Speed>();
             expected.Value = 1;
             expected.DateTimeUtc = DateTime.UtcNow;
             expected.Id = Guid.NewGuid().ToString();
@@ -192,7 +179,6 @@ namespace IngestionAPI.Handlers.Tests
 
             // Assert
             Assert.Equal(expected.Id, actual.Id);
-            Assert.Equal((SignalType)expected.Type, actual.Type);
             Assert.Equal(expected.Value, actual.Value);
             Assert.Equal(expected.DateTimeUtc, actual.DateTimeUtc);
             Assert.Equal(expected.VehicleId, actual.VehicleId);
@@ -205,13 +191,11 @@ namespace IngestionAPI.Handlers.Tests
             var configuration = new PublishHandlerConfiguration { BatchSize = 2 };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal1 = Activator.CreateInstance<Signal>();
-            signal1.Type = (uint)SignalType.Speed;
+            var signal1 = Activator.CreateInstance<Speed>();
             signal1.Value = 1;
             signal1.DateTimeUtc = DateTime.UtcNow;
 
-            var signal2 = Activator.CreateInstance<Signal>();
-            signal2.Type = (uint)SignalType.Speed;
+            var signal2 = Activator.CreateInstance<Speed>();
             signal2.Value = 1;
             signal2.DateTimeUtc = DateTime.UtcNow - TimeSpan.FromMinutes(2);
 
@@ -235,13 +219,11 @@ namespace IngestionAPI.Handlers.Tests
             var configuration = new PublishHandlerConfiguration { Timeout = TimeSpan.FromMilliseconds(50) };
             _publishHandlerConfiguration.Setup(c => c.Value).Returns(configuration);
 
-            var signal1 = Activator.CreateInstance<Signal>();
-            signal1.Type = (uint)SignalType.Speed;
+            var signal1 = Activator.CreateInstance<Speed>();
             signal1.Value = 1;
             signal1.DateTimeUtc = DateTime.UtcNow;
 
-            var signal2 = Activator.CreateInstance<Signal>();
-            signal2.Type = (uint)SignalType.Speed;
+            var signal2 = Activator.CreateInstance<Speed>();
             signal2.Value = 1;
             signal2.DateTimeUtc = signal1.DateTimeUtc;
 
@@ -256,21 +238,6 @@ namespace IngestionAPI.Handlers.Tests
 
             // Assert
             Assert.Single(captured);
-        }
-
-        [Fact]
-        public async Task HandleAsync_SignalTypeNotSupported_DoesNotAddToSet()
-        {
-            // Arrange
-            var unsupportedSignal = Activator.CreateInstance<Signal>();
-            unsupportedSignal.Type = 999;
-            unsupportedSignal.Value = 0;
-
-            // Act
-            Exception error = await Record.ExceptionAsync(() => _handler.HandleAsync(unsupportedSignal));
-
-            // Assert
-            Assert.NotNull(error);
         }
     }
 }

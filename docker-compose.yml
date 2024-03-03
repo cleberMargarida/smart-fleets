@@ -1,31 +1,55 @@
 version: '3.4'
+
 services:
   rabbitmq:
     container_name: rabbitmq
     hostname: rabbitmq
-    image: 'rabbitmq:3-management'
+    image: rabbitmq:3-management
     ports:
-      - '5673:5672'
-      - '15673:15672'
+      - 5673:5672
+      - 15673:15672
+
   redis:
     container_name: redis
     hostname: redis
-    image: 'redis/redis-stack-server:latest'
+    image: redis/redis-stack-server:latest
     ports:
-      - '6380:6379'
+      - 6380:6379
+  
   mssql:
     container_name: mssql
     environment:
       SA_PASSWORD: yourStrong(!)Password
-      ACCEPT_EULA: 'Y'
+      ACCEPT_EULA: Y
     image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
     ports:
-      - '1435:1433'
+      - 1435:1433
+  
+  consul:
+    container_name: consul
+    hostname: consul
+    image: consul:1.9.5
+    ports:
+      - 8500:8500
+    volumes:
+      - ./artifacts/consul/config/consul-config.json:/consul/config/consul-config.json
+  
+  ingestionapi.silo:
+    image: ${docker_registry-}ingestionapisilo
+    build:
+      context: .
+      dockerfile: src/IngestionAPI.Silo/Dockerfile
+    depends_on:
+      - redis
+      - rabbitmq
+  
   ingestionapi:
-    image: '${DOCKER_REGISTRY-}ingestionapi'
+    image: ${DOCKER_REGISTRY-}ingestionapi
     build:
       context: .
       dockerfile: src/IngestionAPI/Dockerfile
     depends_on:
       - redis
       - rabbitmq
+      - ingestionapi.silo
+

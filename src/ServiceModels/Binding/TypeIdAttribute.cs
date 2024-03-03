@@ -20,6 +20,6 @@ public class TypeIdAttribute : Attribute
 public class TypeIdNotDecoratedException : Exception
 {
     public TypeIdNotDecoratedException(Type type) : base($"The class of type {type} must be decorated with TypeIdAttribute.") { }
-    public static TypeIdNotDecoratedException NotDecorated<T>() where T : SignalAbstract => new TypeIdNotDecoratedException(typeof(T));
+    public static TypeIdNotDecoratedException NotDecorated<T>() where T : BaseSignal => new TypeIdNotDecoratedException(typeof(T));
     public static TypeIdNotDecoratedException NotDecorated(Type type) => new TypeIdNotDecoratedException(type);
 }
