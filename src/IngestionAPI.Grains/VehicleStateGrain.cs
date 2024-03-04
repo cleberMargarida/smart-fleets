@@ -13,6 +13,7 @@ public class VehicleStateGrain : Grain<VehicleState>, IVehicleStateGrain
         _bus = bus;
     }
 
+    /// <inheritdoc/>
     public async Task AddOrUpdateAsync(BaseSignal signal)
     {
         if (signal.IsNewerThan(State[signal.Type]))
@@ -30,6 +31,7 @@ public class VehicleStateGrain : Grain<VehicleState>, IVehicleStateGrain
         vehicleHistoricalStateGrain.AddAsync(signal).Ignore();
     }
 
+    /// <inheritdoc/>
     public ValueTask<VehicleState> GetStateAsync()
     {
         return ValueTask.FromResult(State);

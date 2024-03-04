@@ -15,7 +15,7 @@ namespace Orleans
             //int number = 16; // Change this to the number you want to round
             //int rounded = ((number + 2) / 5) * 5; // This will round the number to the nearest multiple of 5
             // Will group all ocurred events grain related within 10s interval.
-            return factory.GetGrain<T>($"{vehicleId}/{dateTimeUtc:yyyy-MM-dd HH:mm:s}{dateTimeUtc.Second/10}");
+            return factory.GetGrain<T>($"{vehicleId}/{dateTimeUtc:yyyy-MM-dd HH:mm:}{dateTimeUtc.Second/10}");
         }
     }
 }

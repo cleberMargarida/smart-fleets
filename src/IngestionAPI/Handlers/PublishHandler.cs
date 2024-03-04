@@ -15,7 +15,6 @@ namespace IngestionAPI.Handlers
     {
         private static readonly SignalDateTimeComparer _comparer = new();
         private readonly IBus _bus;
-        private readonly IMapper _mapper;
         private readonly IOptions<PublishHandlerConfiguration> _configuration;
         private Task? _periodicScan;
         private PeriodicTimer? _periodicTimer;
@@ -30,15 +29,12 @@ namespace IngestionAPI.Handlers
         /// Initializes a new instance of the <see cref="PublishHandler"/> class.
         /// </summary>
         /// <param name="bus">The message bus for publishing signals.</param>
-        /// <param name="mapper">The AutoMapper instance for mapping signals to their abstract representation.</param>
         /// <param name="configuration">The configuration options for the handler.</param>
         public PublishHandler(
             IBus bus,
-            IMapper mapper,
             IOptions<PublishHandlerConfiguration> configuration)
         {
             _bus = bus;
-            _mapper = mapper;
             _configuration = configuration;
         }
 

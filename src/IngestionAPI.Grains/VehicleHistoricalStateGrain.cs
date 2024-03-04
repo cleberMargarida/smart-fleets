@@ -14,6 +14,7 @@ namespace IngestionAPI.GrainInterfaces
             _bus = bus;
         }
 
+        /// <inheritdoc/>
         public async Task AddAsync(BaseSignal signal)
         {
             State[signal.Type] = signal;
@@ -22,6 +23,7 @@ namespace IngestionAPI.GrainInterfaces
             await _bus.PublishAsync(State);
         }
 
+        /// <inheritdoc/>
         public ValueTask<VehicleHistoricalState> GetStateAsync()
         {
             return ValueTask.FromResult(State);
