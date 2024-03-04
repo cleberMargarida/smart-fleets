@@ -22,8 +22,9 @@ public class MessagesConsumerTests :
     public async Task ConsumeMessage_WithSpeedSignal_ShouldProcessAndPublishSignal()
     {
         // Arrange
-        List<VehicleState> states = [];
         List<Speed> signals = [];
+        List<VehicleState> states = [];
+        List<VehicleHistoricalState> historicalStates = [];
         var bus = _api.Services.GetRequiredService<IBus>();
         var message = new Message
         {
@@ -49,10 +50,11 @@ public class MessagesConsumerTests :
         });
         _consumer.Consume<Speed>(signals.Add);
         _consumer.Consume<VehicleState>(states.Add);
+        _consumer.Consume<VehicleHistoricalState>(historicalStates.Add);
 
         // Act
         await bus.PublishAsync(message);
-        await WrapContext();
+        await WrapContextAsync();
 
         // Assert
         Assert.NotNull(signals[0]);
@@ -62,6 +64,7 @@ public class MessagesConsumerTests :
         Assert.Equal(message.Signals[0].Value, signals[0].Value);
         Assert.Equal(message.Signals[0].VehicleId, signals[0].VehicleId);
         Assert.Equal(message.Signals[0].Type, (uint)signals[0].Type);
+        
         Assert.NotNull(states[0]);
         Assert.Equal(message.Signals[0].DateTimeUtc, states[0].Speed.DateTimeUtc);
         Assert.Equal(message.Signals[0].Id, states[0].Speed.Id);
@@ -69,12 +72,20 @@ public class MessagesConsumerTests :
         Assert.Equal(message.Signals[0].Value, states[0].Speed.Value);
         Assert.Equal(message.Signals[0].VehicleId, states[0].Speed.VehicleId);
         Assert.Equal(message.Signals[0].Type, (uint)states[0].Speed.Type);
+        
+        Assert.NotNull(historicalStates[0]);
+        Assert.Equal(message.Signals[0].DateTimeUtc, historicalStates[0].Speed.DateTimeUtc);
+        Assert.Equal(message.Signals[0].Id, historicalStates[0].Speed.Id);
+        Assert.Equal(message.Signals[0].TenantId, historicalStates[0].Speed.TenantId);
+        Assert.Equal(message.Signals[0].Value, historicalStates[0].Speed.Value);
+        Assert.Equal(message.Signals[0].VehicleId, historicalStates[0].Speed.VehicleId);
+        Assert.Equal(message.Signals[0].Type, (uint)historicalStates[0].Speed.Type);
     }
 
     /// <summary>
     /// Wrap the context to consume the message.
     /// </summary>
-    private static async Task WrapContext()
+    private static async Task WrapContextAsync()
     {
         if (IsDebugging)
         {
@@ -89,9 +100,6 @@ public class MessagesConsumerTests :
 
     private static bool IsDebugging
     {
-        get
-        {
-            return System.Diagnostics.Debugger.IsAttached;
-        }
+        get => System.Diagnostics.Debugger.IsAttached;
     }
 }

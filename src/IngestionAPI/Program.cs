@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseOrleansClient(builder.Environment);
+builder.Host.UseOrleansClient();
 
 builder.Services.AddAutoMapper(typeof(SignalMappingProfile));
 builder.Services.AddRabbitMq();

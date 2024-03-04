@@ -16,6 +16,7 @@ builder.Host.UseOrleans((context, silo) =>
                 t.Exchanges.WithFullName();
             });
             cfg.Produce<VehicleState>();
+            cfg.Produce<VehicleHistoricalState>();
         });
     });
 
@@ -30,10 +31,15 @@ builder.Host.UseOrleans((context, silo) =>
         silo.AddMemoryGrainStorageAsDefault();
     }
 
-    silo.UseDashboard(x => x.HostSelf = true);
+    silo.UseDashboard(options => options.Port = 7000);
     silo.ConfigureLogging(options => options.AddConsole());
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
 app.Map("/dashboard", x => x.UseOrleansDashboard());
+app.MapHealthChecks("/health");
+
 app.Run();

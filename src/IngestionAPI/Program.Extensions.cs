@@ -19,11 +19,13 @@ namespace Microsoft.Extensions.Hosting
     [ExcludeFromCodeCoverage]
     public static class HostExtensions
     {
-        public static void UseOrleansClient(this ConfigureHostBuilder host, IWebHostEnvironment environment)
+        public static void UseOrleansClient(this ConfigureHostBuilder host)
         {
             host.UseOrleansClient((context, silo) =>
             {
-                if (environment.IsRunningInDocker())
+                silo.UseConnectionRetryForever();
+
+                if (context.HostingEnvironment.IsRunningInDocker())
                 {
                     silo.UseRedisClustering(context.Configuration.GetConnectionString("redis"));
                 }
@@ -32,6 +34,14 @@ namespace Microsoft.Extensions.Hosting
                     silo.UseLocalhostClustering();
                 }
             });
+        }
+    }
+
+    public static class ClientBuilderExtensions
+    {
+        public static IClientBuilder UseConnectionRetryForever(this IClientBuilder silo)
+        {
+            return silo.UseConnectionRetryFilter((_, _) => Task.FromResult(true));
         }
     }
 }

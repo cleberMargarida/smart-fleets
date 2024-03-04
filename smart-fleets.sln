@@ -37,6 +37,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.TestingHost", "tests\Orleans.TestingHost\Orleans.TestingHost.csproj", "{5AAAC64A-E337-4F20-AB12-01E21543CDC5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IngestionAPI.Grains.UnitTests", "tests\IngestionAPI.Grains.UnitTests\IngestionAPI.Grains.UnitTests.csproj", "{8B8751A8-8618-4471-B9FF-790CDE10E7F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{5AAAC64A-E337-4F20-AB12-01E21543CDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AAAC64A-E337-4F20-AB12-01E21543CDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AAAC64A-E337-4F20-AB12-01E21543CDC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8751A8-8618-4471-B9FF-790CDE10E7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8751A8-8618-4471-B9FF-790CDE10E7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8751A8-8618-4471-B9FF-790CDE10E7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8751A8-8618-4471-B9FF-790CDE10E7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{E5E3FBCF-37CB-47A9-B062-BB4B3435E499} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
 		{69660885-4458-4220-8A7A-C9397EF15633} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
 		{5AAAC64A-E337-4F20-AB12-01E21543CDC5} = {05A142C9-ED63-48E7-8278-9440C4C7C69F}
+		{8B8751A8-8618-4471-B9FF-790CDE10E7F6} = {05A142C9-ED63-48E7-8278-9440C4C7C69F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A945F5D-56C9-4D1D-8462-2E291C17B6F3}
