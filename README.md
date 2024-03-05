@@ -35,7 +35,7 @@ Now listening on: http://localhost:18848
 
 ### Architecture SmartFleets
 We can count with two main services: 
-- **Ingestion**: Designed to have high availability, high scalability, high availability, consuming millions of messages from I/O devices within vehicles.
+- **Ingestion**: Designed to have high availability, high scalability, high performance, consuming millions of messages from I/O devices within vehicles.
 - **SmartFleets**: A monolithic application designed to manage and process vehicle signals for various purposes, consuming Ingestion messages. As a central hub for vehicle data, the service is responsible for a wide range of functions, including:
   - Generating Reports: Compiling data into structured reports for analysis and decision-making.
   - Providing Real-Time Monitoring: Offering live tracking and monitoring of vehicle status and performance.
@@ -76,8 +76,6 @@ Responsibilities: Providing a contract for grain behavior, ensuring consistency 
 - **Ingestion.Silo**: The Silo project is responsible for hosting and managing the Orleans grains. It acts as the runtime environment for the grains, providing the necessary infrastructure for their execution and scaling.
 Responsibilities: Initializing the Orleans cluster, managing grain lifecycle, handling scaling and fault tolerance, and providing support for monitoring and management of the grain instances.
 
-See also (MicrosoftOrleans)[https://learn.microsoft.com/en-us/dotnet/orleans/overview]
-
 #### SmartFleets Service Architecture
   
 Signal Ingestion: The application implements the Pub-Sub pattern, where SmartFleets subscribes to ingestion messages, ensuring a continuous flow of data into the system.
@@ -108,6 +106,8 @@ Responsibilities: Implementing repositories for data access, configuring message
 - **SmartFleets.Application**: This project bridges the domain and infrastructure layers with the presentation layer. It contains application services, command and query handlers, and DTOs (Data Transfer Objects) for transferring data between layers.
 Responsibilities: Orchestrating the flow of data and operations, handling application logic, and mapping domain models to DTOs and vice versa. It leverages MediatR for handling commands and queries, facilitating a clean separation between reads and writes as per the CQRS pattern.
 
-See also [CQRS](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/apply-simplified-microservice-cqrs-ddd-patterns)
+## Quick links
 
-See also [MediatR](https://github.com/jbogard/MediatR)
+* [Microsoft Orleans: Documentation](https://docs.microsoft.com/dotnet/orleans/)
+* [CQRS](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/apply-simplified-microservice-cqrs-ddd-patterns)
+* [MediatR](https://github.com/jbogard/MediatR)
