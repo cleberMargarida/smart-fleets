@@ -1,9 +1,10 @@
+using Ingestion.Api.Handlers;
 using Microsoft.Extensions.Options;
 using Moq;
 using ServiceModels;
 using SmartFleets.RabbitMQ.Base;
 
-namespace Ingestion.Api.Handlers.Tests
+namespace Ingestion.Api.UnitTests.Handlers
 {
     public class PublishHandlerTests
     {

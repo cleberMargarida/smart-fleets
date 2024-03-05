@@ -1,7 +1,7 @@
 using Ingestion.Api.Handlers;
 using Ingestion.Api.Handlers.Abstractions;
 
-namespace Ingestion.Api.Tests.Handlers
+namespace Ingestion.Api.UnitTests.Handlers
 {
     public class PipelineConfiguratorTests
     {

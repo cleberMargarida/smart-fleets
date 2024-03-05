@@ -1,6 +1,7 @@
+using Ingestion.Api.Handlers;
 using ServiceModels;
 
-namespace Ingestion.Api.Handlers.Tests
+namespace Ingestion.Api.UnitTests.Handlers
 {
     public class SignalDateTimeComparerTests
     {

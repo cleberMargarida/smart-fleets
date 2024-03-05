@@ -2,7 +2,7 @@ using Ingestion.Api.Handlers;
 using Ingestion.Api.Models;
 using ServiceModels;
 
-namespace Ingestion.Api.Tests.Handlers
+namespace Ingestion.Api.UnitTests.Handlers
 {
     public class EnrichHandlerTests
     {

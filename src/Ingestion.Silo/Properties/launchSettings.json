@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Ingestion.Silo": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61200;http://localhost:61201"
+    }
+  }
+}
+

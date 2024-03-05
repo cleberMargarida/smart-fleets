@@ -38,7 +38,7 @@ services:
     image: ${DOCKER_REGISTRY-}ingestionapisilo
     build:
       context: .
-      dockerfile: src/Ingestion.Api.Silo/Dockerfile
+      dockerfile: src/Ingestion.Silo/Dockerfile
     depends_on:
       - redis
       - rabbitmq
@@ -52,4 +52,10 @@ services:
       - redis
       - rabbitmq
       - ingestion.api.silo
+
+  smartfleets.api:
+    image: ${DOCKER_REGISTRY-}smartfleetsapi
+    build:
+      context: .
+      dockerfile: src/SmartFleets.Api/Dockerfile
 

@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Ingestion.Api.GrainInterfaces\Ingestion.Api.GrainInterfaces.csproj" />
+	  <ProjectReference Include="..\Ingestion.GrainInterfaces\Ingestion.GrainInterfaces.csproj" />
 	  <ProjectReference Include="..\ServiceModels\ServiceModels.csproj" />
 	</ItemGroup>
 

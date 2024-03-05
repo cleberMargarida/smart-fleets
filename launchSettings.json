@@ -9,7 +9,8 @@
         "Ingestion.Api.silo": "StartDebugging",
         "mssql": "StartWithoutDebugging",
         "rabbitmq": "StartWithoutDebugging",
-        "redis": "StartWithoutDebugging"
+        "redis": "StartWithoutDebugging",
+        "smartfleets.api": "StartDebugging"
       }
     }
   }

@@ -5,7 +5,7 @@ using Moq;
 using ServiceModels;
 using ServiceModels.Abstractions;
 
-namespace Ingestion.Api.Tests.Handlers
+namespace Ingestion.Api.UnitTests.Handlers
 {
     public class PipelineTests
     {
