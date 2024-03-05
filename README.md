@@ -1,8 +1,9 @@
-﻿```mermaid
+```mermaid
 stateDiagram
     direction LR
-    [*] --> IngestionAPI
-    IngestionAPI --> WebApi
+    [*] --> Ingestion.Api
+    Ingestion.Api --> WebApi
     WebApi --> ClientApp
     
 ```
+
