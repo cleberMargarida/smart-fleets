@@ -58,10 +58,12 @@ Processing Flow:
 - State Management: Each grain maintains the state of its corresponding vehicle, updating it with the latest signal data. This state management is crucial for handling signals that arrive out of order or concurrently, ensuring data consistency.
 - Forwarding: Once processed and enriched, the signals are forwarded to the SmartFleetsApi through rabbitmq signals queues.
 
-Scalability: The architecture can easily scale to handle an increasing number of vehicles and signal types, thanks to Orleans' distributed actor model.
-Fault Tolerance: Orleans provides built-in fault tolerance, ensuring that the system remains operational even in the face of hardware failures or network issues.
-Concurrency Handling: The app efficiently manages concurrent signals from multiple vehicles, maintaining accurate and up-to-date states for each vehicle.
+Benefits:
+- Scalability: The architecture can easily scale to handle an increasing number of vehicles and signal types, thanks to Orleans' distributed actor model.
+- Fault Tolerance: Orleans provides built-in fault tolerance, ensuring that the system remains operational even in the face of hardware failures or network issues.
+- Concurrency Handling: The app efficiently manages concurrent signals from multiple vehicles, maintaining accurate and up-to-date states for each vehicle.
 
+Projects:
 - **Ingestion.Api**: This project serves as the entry point for external systems to interact with the Ingestion app.
 Responsibilities: Handling incoming requests, validating data, and routing them to the appropriate Orleans grains for processing.
 
@@ -74,7 +76,7 @@ Responsibilities: Providing a contract for grain behavior, ensuring consistency 
 - **Ingestion.Silo**: The Silo project is responsible for hosting and managing the Orleans grains. It acts as the runtime environment for the grains, providing the necessary infrastructure for their execution and scaling.
 Responsibilities: Initializing the Orleans cluster, managing grain lifecycle, handling scaling and fault tolerance, and providing support for monitoring and management of the grain instances.
 
-See also (Microsoft Orleans Framework)[https://learn.microsoft.com/en-us/dotnet/orleans/overview]
+See also (MicrosoftOrleans)[https://learn.microsoft.com/en-us/dotnet/orleans/overview]
 
 #### SmartFleets Service Architecture
   
@@ -93,6 +95,7 @@ Clean architecute was created by Robert C. Martin known as Uncle Bob. It’s now
   <img src="https://mahedee.net/assets/images/posts/2021/clean.png" />
 </p>
 
+Projects:
 - **SmartFleets.Api**: This project serves as the interface for external communication with the SmartFleets service. It exposes RESTful APIs for interacting with the system.
 Responsibilities: Routing requests to the appropriate command or query handlers, handling API-level concerns such as authentication, validation, and response formatting.
 
@@ -104,7 +107,6 @@ Responsibilities: Implementing repositories for data access, configuring message
 
 - **SmartFleets.Application**: This project bridges the domain and infrastructure layers with the presentation layer. It contains application services, command and query handlers, and DTOs (Data Transfer Objects) for transferring data between layers.
 Responsibilities: Orchestrating the flow of data and operations, handling application logic, and mapping domain models to DTOs and vice versa. It leverages MediatR for handling commands and queries, facilitating a clean separation between reads and writes as per the CQRS pattern.
-
 
 See also [CQRS](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/apply-simplified-microservice-cqrs-ddd-patterns)
 
