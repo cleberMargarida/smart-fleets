@@ -1,20 +1,21 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{05A142C9-ED63-48E7-8278-9440C4C7C69F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{05A142C9-ED63-48E7-8278-9440C4C7C69F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\WebAPI\WebAPI.csproj", "{B15801C2-5B2D-43CB-B9DD-8558F75E96D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Api", "src\SmartFleets.Api\SmartFleets.Api.csproj", "{B15801C2-5B2D-43CB-B9DD-8558F75E96D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingestion.Api.UnitTests", "tests\Ingestion.Api.UnitTests\Ingestion.Api.UnitTests.csproj", "{475A2D52-C143-43C2-A422-E61E2592331B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingestion.Api.IntegrationTests", "tests\Ingestion.Api.IntegrationTests\Ingestion.Api.IntegrationTests.csproj", "{456DA223-5865-437C-858D-75A154E04F17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.UnitTests", "tests\WebAPI.UnitTests\WebAPI.UnitTests.csproj", "{A3D463DE-4404-40C2-83CC-252CA8CA5483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Api.UnitTests", "tests\SmartFleets.Api.UnitTests\SmartFleets.Api.UnitTests.csproj", "{A3D463DE-4404-40C2-83CC-252CA8CA5483}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.IntegrationTests", "tests\WebAPI.IntegrationTests\WebAPI.IntegrationTests.csproj", "{293128B9-A698-4A61-BAA7-C40B41379F19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Api.IntegrationTests", "tests\SmartFleets.Api.IntegrationTests\SmartFleets.Api.IntegrationTests.csproj", "{293128B9-A698-4A61-BAA7-C40B41379F19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{893363DE-5521-41AE-9227-9098230852EF}"
 	ProjectSection(SolutionItems) = preProject
@@ -37,6 +38,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingestion.Api", "src\Ingestion.Api\Ingestion.Api.csproj", "{5C13DC03-EE69-49D9-ACE0-998DE15EBC72}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingestion.Api.GrainInterfaces", "src\Ingestion.Api.GrainInterfaces\Ingestion.Api.GrainInterfaces.csproj", "{8B9A1ACD-14DC-45F3-8F31-37D0BE4B3421}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Infrastructure", "src\SmartFleets.Infrastructure\SmartFleets.Infrastructure.csproj", "{BF4877BA-B4C0-42CB-B208-F13091C31748}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Application", "src\SmartFleets.Application\SmartFleets.Application.csproj", "{E262E773-D18A-4E2B-94B2-6A104A428B59}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartFleets.Domain", "src\SmartFleets.Domain\SmartFleets.Domain.csproj", "{2F241CF2-3353-42C3-B6D9-652067C221DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +103,18 @@ Global
 		{8B9A1ACD-14DC-45F3-8F31-37D0BE4B3421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B9A1ACD-14DC-45F3-8F31-37D0BE4B3421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B9A1ACD-14DC-45F3-8F31-37D0BE4B3421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF4877BA-B4C0-42CB-B208-F13091C31748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF4877BA-B4C0-42CB-B208-F13091C31748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF4877BA-B4C0-42CB-B208-F13091C31748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF4877BA-B4C0-42CB-B208-F13091C31748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E262E773-D18A-4E2B-94B2-6A104A428B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E262E773-D18A-4E2B-94B2-6A104A428B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E262E773-D18A-4E2B-94B2-6A104A428B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E262E773-D18A-4E2B-94B2-6A104A428B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F241CF2-3353-42C3-B6D9-652067C221DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F241CF2-3353-42C3-B6D9-652067C221DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F241CF2-3353-42C3-B6D9-652067C221DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F241CF2-3353-42C3-B6D9-652067C221DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +132,9 @@ Global
 		{8B8751A8-8618-4471-B9FF-790CDE10E7F6} = {05A142C9-ED63-48E7-8278-9440C4C7C69F}
 		{5C13DC03-EE69-49D9-ACE0-998DE15EBC72} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
 		{8B9A1ACD-14DC-45F3-8F31-37D0BE4B3421} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
+		{BF4877BA-B4C0-42CB-B208-F13091C31748} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
+		{E262E773-D18A-4E2B-94B2-6A104A428B59} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
+		{2F241CF2-3353-42C3-B6D9-652067C221DC} = {F2D31E46-FA2F-4D12-A17D-8BE9143D8FA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A945F5D-56C9-4D1D-8462-2E291C17B6F3}
