@@ -33,23 +33,23 @@ services:
       - 8500:8500
     volumes:
       - ./artifacts/consul/config/consul-config.json:/consul/config/consul-config.json
-  
-  ingestionapi.silo:
-    image: ${docker_registry-}ingestionapisilo
+
+  ingestion.api.silo:
+    image: ${DOCKER_REGISTRY-}ingestionapisilo
     build:
       context: .
-      dockerfile: src/IngestionAPI.Silo/Dockerfile
+      dockerfile: src/Ingestion.Api.Silo/Dockerfile
     depends_on:
       - redis
       - rabbitmq
-  
-  ingestionapi:
+
+  ingestion.api:
     image: ${DOCKER_REGISTRY-}ingestionapi
     build:
       context: .
-      dockerfile: src/IngestionAPI/Dockerfile
+      dockerfile: src/Ingestion.Api/Dockerfile
     depends_on:
       - redis
       - rabbitmq
-      - ingestionapi.silo
+      - ingestion.api.silo
 
