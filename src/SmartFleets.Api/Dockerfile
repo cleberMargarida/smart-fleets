@@ -10,10 +10,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SmartFleets.Api/SmartFleets.Api.csproj", "src/SmartFleets.Api/"]
+COPY ["src/ServiceModels/ServiceModels.csproj", "src/ServiceModels/"]
 COPY ["src/SmartFleets.Infrastructure/SmartFleets.Infrastructure.csproj", "src/SmartFleets.Infrastructure/"]
 COPY ["src/SmartFleets.Application/SmartFleets.Application.csproj", "src/SmartFleets.Application/"]
 COPY ["src/SmartFleets.Domain/SmartFleets.Domain.csproj", "src/SmartFleets.Domain/"]
-COPY ["src/ServiceModels/ServiceModels.csproj", "src/ServiceModels/"]
 RUN dotnet restore "./src/SmartFleets.Api/./SmartFleets.Api.csproj"
 COPY . .
 WORKDIR "/src/src/SmartFleets.Api"

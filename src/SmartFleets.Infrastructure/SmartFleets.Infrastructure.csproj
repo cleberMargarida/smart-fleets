@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\.gitkeep" />
+    <None Remove="Repositories\.gitkeep" />
+    <None Remove="Services\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SmartFleets.Application\SmartFleets.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

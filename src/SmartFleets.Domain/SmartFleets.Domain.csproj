@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Entities\.gitkeep" />
+    <None Remove="Repositories\.gitkeep" />
+    <None Remove="Services\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ServiceModels\ServiceModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
