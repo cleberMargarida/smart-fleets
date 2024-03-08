@@ -3,9 +3,9 @@ using SmartFleets.Application.Notifications;
 
 namespace SmartFleets.Application.Handlers;
 
-public class FaultHandler : INotificationHandler<VehicleHistoricalStateNotification>
+public class FaultHandler : INotificationHandler<VehicleStateNotification>
 {
-    public Task Handle(VehicleHistoricalStateNotification notification, CancellationToken cancellationToken)
+    public Task Handle(VehicleStateNotification notification, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

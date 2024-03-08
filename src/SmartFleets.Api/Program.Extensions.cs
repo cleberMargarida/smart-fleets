@@ -25,7 +25,6 @@ namespace SmartFleets.Api
                 });
 
                 cfg.Consume<VehicleState>();
-                cfg.Consume<VehicleHistoricalState>();
 
                 foreach (var signalType in SignalTypeBindingHelper.TypeMapping.Values)
                 {

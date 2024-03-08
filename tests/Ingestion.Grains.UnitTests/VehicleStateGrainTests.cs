@@ -9,14 +9,12 @@ namespace Ingestion.Grains.UnitTests
         private readonly VehicleStateGrain _grain;
         private readonly Mock<IBus> _bus;
         private readonly Mock<IStorage<VehicleState>> _storage;
-        private readonly Mock<IVehicleHistoricalStateGrain> _historicalStateGrain;
 
-        public VehicleStateGrainTests(VehicleStateGrain grain, Mock<IBus> bus, Mock<IStorage<VehicleState>> storage, Mock<IVehicleHistoricalStateGrain> historicalStateGrain)
+        public VehicleStateGrainTests(VehicleStateGrain grain, Mock<IBus> bus, Mock<IStorage<VehicleState>> storage)
         {
             _grain = grain;
             _bus = bus;
             _storage = storage;
-            _historicalStateGrain = historicalStateGrain;
         }
 
         [Fact]
@@ -49,7 +47,7 @@ namespace Ingestion.Grains.UnitTests
         }
 
         [Fact]
-        public async Task AddOrUpdateAsync_WhenSignalIsOlder_ShouldNotUpdateStateOrPublish_And_ShouldAddToHistoricalStateGrain()
+        public async Task AddOrUpdateAsync_WhenSignalIsOlder_ShouldNotUpdateStateOrPublish()
         {
             // Arrange
             var older = Activator.CreateInstance<Speed>();
@@ -69,7 +67,6 @@ namespace Ingestion.Grains.UnitTests
 
             // Assert
             _bus.Verify(proxy => proxy.PublishAsync(It.IsAny<VehicleState>()), Times.Never);
-            _historicalStateGrain.Verify(proxy => proxy.AddAsync(It.IsAny<Speed>()));
 
             var currentState = await _grain.GetStateAsync();
             var result = currentState[newer.Type];

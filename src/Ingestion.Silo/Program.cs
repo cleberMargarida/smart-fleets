@@ -18,7 +18,6 @@ builder.Host.UseOrleans((context, silo) =>
                 t.Exchanges.WithFullName();
             });
             cfg.Produce<VehicleState>();
-            cfg.Produce<VehicleHistoricalState>();
         });
     });
 

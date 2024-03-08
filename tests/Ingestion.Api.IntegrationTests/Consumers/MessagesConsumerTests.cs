@@ -24,7 +24,6 @@ public class MessagesConsumerTests :
         // Arrange
         List<Speed> signals = [];
         List<VehicleState> states = [];
-        List<VehicleHistoricalState> historicalStates = [];
         var bus = _api.Services.GetRequiredService<IBus>();
         var message = new Message
         {
@@ -50,7 +49,6 @@ public class MessagesConsumerTests :
         });
         _consumer.Consume<Speed>(signals.Add);
         _consumer.Consume<VehicleState>(states.Add);
-        _consumer.Consume<VehicleHistoricalState>(historicalStates.Add);
 
         // Act
         await bus.PublishAsync(message);
@@ -72,14 +70,6 @@ public class MessagesConsumerTests :
         Assert.Equal(message.Signals[0].Value, states[0].Speed.Value);
         Assert.Equal(message.Signals[0].VehicleId, states[0].Speed.VehicleId);
         Assert.Equal(message.Signals[0].Type, (uint)states[0].Speed.Type);
-        
-        Assert.NotNull(historicalStates[0]);
-        Assert.Equal(message.Signals[0].DateTimeUtc, historicalStates[0].Speed.DateTimeUtc);
-        Assert.Equal(message.Signals[0].Id, historicalStates[0].Speed.Id);
-        Assert.Equal(message.Signals[0].TenantId, historicalStates[0].Speed.TenantId);
-        Assert.Equal(message.Signals[0].Value, historicalStates[0].Speed.Value);
-        Assert.Equal(message.Signals[0].VehicleId, historicalStates[0].Speed.VehicleId);
-        Assert.Equal(message.Signals[0].Type, (uint)historicalStates[0].Speed.Type);
     }
 
     /// <summary>

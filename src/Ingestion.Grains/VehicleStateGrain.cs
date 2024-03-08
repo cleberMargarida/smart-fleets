@@ -1,5 +1,4 @@
 using Ingestion.GrainInterfaces;
-using Ingestion.GrainInterfaces.Extensions;
 using ServiceModels;
 using ServiceModels.Abstractions;
 using SmartFleets.RabbitMQ.Base;
@@ -18,19 +17,15 @@ public class VehicleStateGrain : Grain<VehicleState>, IVehicleStateGrain
     /// <inheritdoc/>
     public async Task AddOrUpdateAsync(BaseSignal signal)
     {
-        if (signal.IsNewerThan(State[signal.Type]))
+        if (signal.IsOlderThan(State[signal.Type]))
         {
-            State[signal.Type] = signal;
-
-            await _bus.PublishAsync(State);
-            await WriteStateAsync();
+            return;
         }
 
-        var vehicleHistoricalStateGrain = GrainFactory.GetGrain<IVehicleHistoricalStateGrain>(
-                signal.VehicleId,
-                signal.DateTimeUtc);
+        State[signal.Type] = signal;
 
-        vehicleHistoricalStateGrain.AddAsync(signal).Ignore();
+        await _bus.PublishAsync(State);
+        await WriteStateAsync();
     }
 
     /// <inheritdoc/>

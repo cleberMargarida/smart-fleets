@@ -16,7 +16,6 @@ namespace Ingestion.Grains.UnitTests
             services.AddScoped(typeof(Mock<>));
             services.AddScoped(s => s.GetService<Mock<IBus>>().Object);
             services.AddScoped(s => s.GetService<Mock<IVehicleStateGrain>>().Object);
-            services.AddScoped(s => s.GetService<Mock<IVehicleHistoricalStateGrain>>().Object);
             services.AddMockSilo();
 
             services.AddScoped(s =>
@@ -26,21 +25,7 @@ namespace Ingestion.Grains.UnitTests
                 mock.Setup(proxy => proxy.GetGrain<IVehicleStateGrain>(It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(s.GetService<IVehicleStateGrain>());
 
-                mock.Setup(proxy => proxy.GetGrain<IVehicleHistoricalStateGrain>(It.IsAny<string>(), It.IsAny<string>()))
-                    .Returns(s.GetService<IVehicleHistoricalStateGrain>());
-
                 return mock.Object;
-            });
-
-            services.AddScoped(s =>
-            {
-                RuntimeContext.SetExecutionContext(s.GetService<IGrainContext>());
-                var bus = s.GetService<IBus>();
-                var storage = s.GetService<Mock<IStorage<VehicleHistoricalState>>>();
-                storage.SetupGet(proxy => proxy.State).Returns(new VehicleHistoricalState());
-                var grain = new VehicleHistoricalStateGrain(bus);
-                typeof(Grain<VehicleHistoricalState>).GetField("_storage", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(grain, storage.Object);
-                return grain;
             });
 
             services.AddScoped(s =>
