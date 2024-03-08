@@ -2,17 +2,24 @@
 
 A .NET application implementing an monitor/report-generator web site using a services-based architecture.
 
-![eShop Reference Application architecture diagram](artifacts/architecture.png)
+![eShop Reference Application architecture diagram](images/architecture.png)
 
 ## Getting Started
 
 ### Prerequisites
 
 - Clone the Smart-Fleets repository: [https://github.com/getting-there-org/smart-fleets](https://github.com/getting-there-org/smart-fleets/)
-- (Windows only) Install Visual Studio. [Visual Studio 2022 version](https://visualstudio.microsoft.com/vs/).
+- (Windows only) Install Visual Studio. Visual Studio contains tooling support for .NET Aspire that you will want to have. [Visual Studio 2022 version 17.10 Preview](https://visualstudio.microsoft.com/vs/preview/).
   - During installation, ensure that the following are selected:
     - `ASP.NET and web development` workload.
+    - `.NET Aspire SDK` component in `Individual components`.
 - Install the latest [.NET 8 SDK](https://github.com/dotnet/installer#installers-and-binaries)
+- On Mac/Linux (or if not using Visual Studio), install the Aspire workload with the following commands:
+```powershell
+dotnet workload update
+dotnet workload install aspire
+dotnet restore smart-fleets.sln
+```
 - Install & start Docker Desktop:  https://docs.docker.com/engine/install/
 
 ### Running the solution
@@ -22,13 +29,17 @@ A .NET application implementing an monitor/report-generator web site using a ser
 
 * (Windows only) Run the application from Visual Studio:
  - Open the `smart-fleets.sln` file in Visual Studio
-<p align="center">
-  <img src="artifacts/sln.png" />
-</p>
- - Ensure that `docker-compose` is your startup project
- - Hit F5 to launch
+ - Ensure that `SmartFleets.AppHost.csproj` is your startup project
+    <p align="center">
+      <img src="images/sln.png" />
+    </p>
+ - Hit Ctrl-F5 to launch Aspire
 
-Then look for lines like this in the console output in order to find the URL to open the API documentation:
+* Or run the application from your terminal:
+```powershell
+dotnet run --project src/SmartFleets.AppHost/SmartFleets.AppHost.csproj
+```
+then look for lines like this in the console output in order to find the URL to open the Aspire dashboard:
 ```sh
 Now listening on: http://localhost:18848
 ```

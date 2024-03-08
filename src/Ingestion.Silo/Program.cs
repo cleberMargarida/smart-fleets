@@ -2,6 +2,8 @@ using ServiceModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Host.UseOrleans((context, silo) =>
 {
     silo.ConfigureServices(services =>
@@ -39,7 +41,8 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
+
 app.Map("/dashboard", x => x.UseOrleansDashboard());
-app.MapHealthChecks("/health");
 
 app.Run();

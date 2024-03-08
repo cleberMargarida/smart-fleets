@@ -20,6 +20,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+    - name: Workload update
+      run: dotnet workload update
+    - name: Aspire install
+      run: dotnet workload install aspire
     - name: Restore dependencies
       run: dotnet restore smart-fleets.sln
     - name: Build

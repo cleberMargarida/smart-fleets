@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Host.UseOrleansClient();
 
 builder.Services.AddAutoMapper(typeof(SignalMappingProfile));
@@ -18,5 +20,7 @@ builder.Services.AddPipeline(pipeline =>
         .Add<VehicleStateHandler>());
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.Run();

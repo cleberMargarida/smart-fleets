@@ -6,8 +6,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>721047d8-ddd2-4347-97af-bb97b7709e1d</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..</DockerfileContext>
-		<DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,6 +29,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Ingestion.GrainInterfaces\Ingestion.GrainInterfaces.csproj" />
 	  <ProjectReference Include="..\ServiceModels\ServiceModels.csproj" />
+	  <ProjectReference Include="..\SmartFleets.ServiceDefaults\SmartFleets.ServiceDefaults.csproj" />
 	</ItemGroup>
 
 </Project>

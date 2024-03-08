@@ -6,8 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>410d1ca2-2732-4fd6-94ab-d53e3839fc56</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ServiceModels\ServiceModels.csproj" />
     <ProjectReference Include="..\SmartFleets.Infrastructure\SmartFleets.Infrastructure.csproj" />
+    <ProjectReference Include="..\SmartFleets.ServiceDefaults\SmartFleets.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
