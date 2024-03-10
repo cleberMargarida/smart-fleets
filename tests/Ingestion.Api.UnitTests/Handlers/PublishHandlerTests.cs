@@ -234,7 +234,7 @@ namespace Ingestion.Api.UnitTests.Handlers
 
             // Act
             await _handler.HandleAsync(signal1);
-            await Task.Delay(50);
+            await Task.Delay(100);
             await _handler.HandleAsync(signal2);
 
             // Assert

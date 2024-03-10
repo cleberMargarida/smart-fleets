@@ -1,0 +1,53 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET Workflow
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Workload update
+      run: dotnet workload update
+    - name: Aspire install
+      run: dotnet workload install aspire
+    - name: Restore dependencies
+      run: dotnet restore smart-fleets.sln
+    - name: Build
+      run: dotnet build smart-fleets.sln --no-restore
+    - name: Test
+      run: dotnet test smart-fleets.sln --filter DisplayName~UnitTests --no-build --verbosity normal
+  
+  integration-tests:
+    needs: unit-tests
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Workload update
+      run: dotnet workload update
+    - name: Aspire install
+      run: dotnet workload install aspire
+    - name: Restore dependencies
+      run: dotnet restore smart-fleets.sln
+    - name: Build
+      run: dotnet build smart-fleets.sln --no-restore
+    - name: Test
+      run: dotnet test smart-fleets.sln --filter DisplayName~IntegrationTests --no-build --verbosity normal
+  
