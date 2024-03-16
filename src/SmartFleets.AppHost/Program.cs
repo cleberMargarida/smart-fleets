@@ -4,10 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var redis = builder.AddRedisContainer("redis");
 var rabbitmq = builder.AddRabbitMQContainer("rabbitmq");
-
-var mssql = builder.AddSqlServerContainer("mssql")
-                   .WithVolumeMount("mssql", "/var/opt/mssql", VolumeMountType.Named)
-                   .AddDatabase("smartfleets.db");
+var mssql = builder.AddSqlServerContainer("smartfleets_db");
 
 builder.AddProject<Ingestion_Api>("ingestion.api")
        .WithReference(rabbitmq)

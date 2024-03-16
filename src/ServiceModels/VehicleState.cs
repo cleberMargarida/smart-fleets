@@ -1,4 +1,8 @@
 ﻿using MessagePack;
+using ServiceModels.Abstractions;
+using ServiceModels.Binding;
+using ServiceModels.Helpers;
+using System.Reflection;
 
 namespace ServiceModels;
 
@@ -9,6 +13,9 @@ namespace ServiceModels;
 [MessagePackObject(keyAsPropertyName: true)]
 public partial class VehicleState
 {
+    private static readonly Dictionary<SignalType, PropertyInfo> _propertyByType
+       = SignalsPropertiesHelper.GetProperties<VehicleState>();
+
     /// <summary>
     /// Gets or sets the ABS status of the vehicle.
     /// </summary>
@@ -80,4 +87,38 @@ public partial class VehicleState
     /// </summary>
     [Id(11)]
     public TirePressure? TirePressure { get; set; }
+
+    /// <summary>
+    /// Gets or sets the signal value for a specified signal type.
+    /// </summary>
+    /// <param name="type">The type of signal.</param>
+    /// <returns>The signal value.</returns>
+    public BaseSignal this[SignalType type]
+    {
+        get => (BaseSignal)_propertyByType[type].GetValue(this)!;
+        set => _propertyByType[type].SetValue(this, value);
+    }
+
+    /// <summary>
+    /// Gets all non-null signals in the vehicle state, ordered by their timestamp.
+    /// </summary>
+    /// <returns>An enumerable of all non-null signals.</returns>
+    public IEnumerable<BaseSignal> GetSignals() => _propertyByType.Values
+        .Select(p => p.GetValue(this))
+        .OfType<BaseSignal>()
+        .Where(s => s != null)
+        .OrderBy(s => s.DateTimeUtc);
+    
+    /// <summary>
+    /// Gets the last signal in the vehicle state.
+    /// </summary>
+    /// <returns>The last signal.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if there are no signals.</exception>
+    public BaseSignal Last() => GetSignals().Last();
+
+    /// <summary>
+    /// Gets the last signal in the vehicle state, or null if there are no signals.
+    /// </summary>
+    /// <returns>The last signal, or null if none exist.</returns>
+    public BaseSignal? LastOrDefault() => GetSignals().LastOrDefault();
 }

@@ -11,6 +11,8 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class Extensions
 {
+    private static readonly string[] tags = new[] { "live" };
+
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.ConfigureOpenTelemetry();
@@ -43,7 +45,7 @@ public static class Extensions
             .WithMetrics(metrics =>
             {
                 metrics.AddRuntimeInstrumentation()
-                       .AddBuiltInMeters();
+                    .AddBuiltInMeters();
             })
             .WithTracing(tracing =>
             {
@@ -54,8 +56,8 @@ public static class Extensions
                 }
 
                 tracing.AddAspNetCoreInstrumentation()
-                       .AddGrpcClientInstrumentation()
-                       .AddHttpClientInstrumentation();
+                    .AddGrpcClientInstrumentation()
+                    .AddHttpClientInstrumentation();
             });
 
         builder.AddOpenTelemetryExporters();
@@ -89,7 +91,7 @@ public static class Extensions
     {
         builder.Services.AddHealthChecks()
             // Add a default liveness check to ensure app is responsive
-            .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+            .AddCheck("self", () => HealthCheckResult.Healthy(), tags);
 
         return builder;
     }

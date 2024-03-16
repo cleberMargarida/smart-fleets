@@ -1,6 +1,6 @@
 using ServiceModels;
 using ServiceModels.Helpers;
-using SmartFleets.Api;
+using SmartFleets.Api.Services;
 using SmartFleets.Infrastructure.Consumers;
 using SmartFleets.RabbitMQ.Messaging.Extensions;
 using System.Diagnostics.CodeAnalysis;
@@ -9,9 +9,32 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SmartFleets.Api
 {
+    /// <summary>
+    /// Application entry point.
+    /// </summary>
+    public partial class Program { }
+
+    /// <summary>
+    /// Provides extension methods for configuring the application.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public static class ProgramExtensions
     {
+        /// <summary>
+        /// Adds the database context migrator as a hosted service.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The updated service collection.</returns>
+        public static IServiceCollection AddDbContextMigrator(this IServiceCollection services)
+        {
+            return services.AddHostedService<MigratorService>();
+        }
+
+        /// <summary>
+        /// Configures RabbitMQ with the application's messaging requirements.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The updated service collection.</returns>
         public static IServiceCollection AddRabbitMq(this IServiceCollection services)
         {
             services.AddRabbitMq((s, cfg) =>

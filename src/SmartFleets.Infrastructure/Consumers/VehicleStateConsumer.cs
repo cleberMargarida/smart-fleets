@@ -1,21 +1,35 @@
 ﻿using MediatR;
 using ServiceModels;
-using SmartFleets.Application.Notifications;
+using SmartFleets.Application.Notifications.VehicleState;
 using SmartFleets.RabbitMQ.Messaging;
+using System.Threading.Tasks;
 
-namespace SmartFleets.Infrastructure.Consumers;
-
-public class VehicleStateConsumer : IConsumer<VehicleState>
+namespace SmartFleets.Infrastructure.Consumers
 {
-    private readonly IMediator _mediator;
-
-    public VehicleStateConsumer(IMediator mediator)
+    /// <summary>
+    /// Represents a consumer that processes vehicle state messages.
+    /// </summary>
+    public class VehicleStateConsumer : IConsumer<VehicleState>
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    public Task ConsumeAsync(VehicleState signal)
-    {
-        return _mediator.Publish(new VehicleStateNotification(signal));
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VehicleStateConsumer"/> class.
+        /// </summary>
+        /// <param name="mediator">The mediator for publishing notifications.</param>
+        public VehicleStateConsumer(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        /// <summary>
+        /// Consumes a vehicle state message and publishes a corresponding notification.
+        /// </summary>
+        /// <param name="signal">The vehicle state message.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public Task ConsumeAsync(VehicleState signal)
+        {
+            return _mediator.Publish(new VehicleStateNotification(signal));
+        }
     }
 }

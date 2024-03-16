@@ -24,8 +24,8 @@ namespace Ingestion.Api.Handlers
         public static Task PublishSignalsAsync(this IBus bus, SortedSet<BaseSignal> signals)
         {
             var type = signals.First().GetType();
-            var values = _collectionMethod.MakeGenericMethod(type).Invoke(null, [signals]);
-            return (Task)_publishMethod.MakeGenericMethod(type).Invoke(bus, [values]);
+            var values = _collectionMethod.MakeGenericMethod(type).Invoke(null, new[] { signals });
+            return (Task)_publishMethod.MakeGenericMethod(type).Invoke(bus, new [] { values });
         }
 
         private static IEnumerable<T> Collection<T>(SortedSet<BaseSignal> signals) where T : BaseSignal
@@ -37,4 +37,3 @@ namespace Ingestion.Api.Handlers
         }
     }
 }
-

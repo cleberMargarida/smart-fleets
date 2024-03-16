@@ -4,7 +4,7 @@ namespace Ingestion.Api.Handlers
 {
     public class PipelineConfigurator
     {
-        private readonly HashSet<Type> _pipeline = [];
+        private readonly HashSet<Type> _pipeline = new ();
 
         public PipelineConfigurator Add<T>() where T : IHandler
         {
