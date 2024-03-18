@@ -111,7 +111,7 @@ Responsibilities: Routing requests to the appropriate command or query handlers,
 - **SmartFleets.Domain**: This project contains the core business logic and domain models of the SmartFleets service. It defines the entities, value objects, events, and interfaces that represent the business rules and operations of the system.
 Responsibilities: Ensuring the integrity of the domain by enforcing business rules, encapsulating business logic, and raising domain events.
 
-- **SmartFleets.Infrastructure**: This project provides the implementation for infrastructure concerns such as data persistence, message bus integration, external service clients, and other cross-cutting concerns.
+- **[SmartFleets.Infrastructure](https://github.com/getting-there-org/smart-fleets/blob/master/src/SmartFleets.Infrastructure/README.md)** This project provides the implementation for infrastructure concerns such as data persistence, message bus integration, external service clients, and other cross-cutting concerns.
 Responsibilities: Implementing repositories for data access, configuring message bus communication (e.g., RabbitMQ), and providing implementations for external service interfaces.
 
 - **SmartFleets.Application**: This project bridges the domain and infrastructure layers with the presentation layer. It contains application services, command and query handlers, and DTOs (Data Transfer Objects) for transferring data between layers.
