@@ -11,7 +11,7 @@ Responsibilities: Implementing repositories for data access, configuring message
 
 Table of content
 - [Add migration](#add-migration)
-- [Remove migration](#update-database)
+- [Update migration](#update-database)
 - [Remove migration](#remove-migration)
 
 #### Add migration
